@@ -36,12 +36,20 @@
             <!-- BOTTONE -->
             <button type="button">MORE INFO</button>
         </form>
-    </div>
-    <div id="richieste">
-    <p id="domandone"></p>
-    <div id="rispostine">
-        
-    </div>
+    <div id="quiz-container">
+        <div id="domandone"></div>
+        <div id="rispostine"></div>
+        <div id="result"></div>
+      </div>
+      
+      <div id="timer-container">
+        <svg id="timer-svg" width="200" height="200">
+          <circle id="timer-circle-bg" cx="100" cy="100" r="90" stroke="#e6e6e6" stroke-width="8" fill="transparent" />
+          <circle id="timer-circle" cx="100" cy="100" r="90" stroke="#00d4ff" stroke-width="8" fill="transparent" 
+            stroke-linecap="round" stroke-dasharray="565.48" stroke-dashoffset="565.48" />
+          <text id="timer-text" x="100" y="110" text-anchor="middle" font-size="30px" fill="#ffffff">10</text>
+        </svg>
+      </div>
     </div>
 <script src="./js/pagina_4.js"></script>
 </body>

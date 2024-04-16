@@ -109,40 +109,73 @@ const questions = [
 const mischia = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         const n = Math.floor(Math.random() * (i + 1));
-        [array[i], array[n]] = [array[n], array[i]];
+        [array[i], array[n]] = [array[n], array[i]]; 
     }
     return array
 }
 
 mischia(questions)
+// let x = input.value;
 let score = 0;
 let n = 0;
+let timer;
+const tempoDisponibile = 10;
+let tempoMancante = tempoDisponibile;
+const cerchio = 565.48; // Circonferenza del cerchio SVG
+const timerCircle = document.getElementById("timer-circle");
+const timerText = document.getElementById("timer-text");
 const inserisci_domanda = (array) => {
+    clearTimeout(timer);
+    tempoMancante = tempoDisponibile; // Reset timer for each question
     const spazioDomanda = document.getElementById('domandone');
-    const luogo = document.getElementById('rispostine');
-    luogo.innerHTML = ''; // Pulisci le risposte precedenti prima di aggiungere nuove
-    if (n < array.length) {
-        spazioDomanda.innerText = array[n].question;
-        const domandaCorrente = array[n];
-        const risposte = [domandaCorrente.correct_answer, ...domandaCorrente.incorrect_answers];
-        mischia(risposte);
-        risposte.forEach((risposta) => { 
-            const forma = document.createElement('button');
-            const contiene = document.getElementById('richieste');
-            forma.innerText = risposta;
-            forma.addEventListener('click', () => {
-                if (risposta === domandaCorrente.correct_answer) {
-                    score++; // Incrementa il punteggio se la risposta è corretta
-                } 
-                n++; // Passa alla prossima domanda
-                if (n < array.length) {
-                    inserisci_domanda(array); // Richiama la funzione per la prossima domanda
-                } else {
-                    contiene.innerHTML = '';                  //      spazioDomanda.innerText = 'Quiz finito! Il tuo punteggio finale è: ' + score;
-                }
-            });
-            luogo.appendChild(forma);
-        });
+    const spazioRisposte = document.getElementById('rispostine');
+    spazioRisposte.innerHTML = ''; // Pulisci le risposte precedenti
+    spazioDomanda.innerText = array[n].question;
+    const domandaCorrente = array[n];
+    const risposte = [domandaCorrente.correct_answer, ...domandaCorrente.incorrect_answers];
+    mischia(risposte);
+    risposte.forEach((risposta) => {
+    const forma = document.createElement('button');
+    forma.innerText = risposta;
+    spazioRisposte.appendChild(forma);
+    forma.addEventListener('click', () => {
+      clearTimeout(timer); 
+    if (risposta === domandaCorrente.correct_answer) {
+        score++; // Incrementa il punteggio se la risposta è corretta
     }
+      n++; // Passa alla prossima domanda
+    if (n < array.length) {
+        inserisci_domanda(array); // Richiama la funzione per la prossima domanda
+    } else {
+        document.getElementById('contenitore').innerHTML = ''; //'Quiz finito! Il tuo punteggio finale è: ' //+ score;
+        // document.getElementById('rispostine').innerHTML = ''; // Pulisci le risposte
+        // document.getElementById('timer-container').style.display = 'none'; // Nascondi il timer
+    }
+    });
+});
+
+startTimer();
 };
+
+function startTimer() {
+aspetto_visivo_timer();
+timer = setInterval(() => {
+    tempoMancante--;
+    aspetto_visivo_timer();
+    if (tempoMancante <= 0) {
+    clearInterval(timer);
+    n++;
+    if (n < questions.length) {
+        inserisci_domanda(questions);
+    } else { 
+        document.getElementById('contenitore').innerHTML = '';
+    }
+    }
+}, 1000);
+}
+function aspetto_visivo_timer() {
+    const dashOffset = cerchio - (cerchio * tempoMancante) / tempoDisponibile;
+    timerCircle.style.strokeDashoffset = dashOffset;
+    timerText.textContent = tempoMancante;
+}
 inserisci_domanda(questions);
