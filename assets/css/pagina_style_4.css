@@ -10,7 +10,6 @@ body {
     margin: 2rem;
 }
 
-
 #contenitore {
     width: 80%;
     padding-left: 10%;
@@ -89,4 +88,9 @@ button {
     border-width: 0;
     box-shadow: 0px 0px 25px #0099a0;
     cursor: pointer;
+}
+
+
+#domandone { 
+    color: white;
 }
