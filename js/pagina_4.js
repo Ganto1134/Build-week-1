@@ -139,7 +139,7 @@ const inserisci_domanda = (array) => {
     forma.innerText = risposta;
     spazioRisposte.appendChild(forma);
     forma.addEventListener('click', () => {
-      clearTimeout(timer); 
+    clearTimeout(timer); 
     if (risposta === domandaCorrente.correct_answer) {
         score++; // Incrementa il punteggio se la risposta è corretta
     }
@@ -147,7 +147,13 @@ const inserisci_domanda = (array) => {
     if (n < array.length) {
         inserisci_domanda(array); // Richiama la funzione per la prossima domanda
     } else {
-        document.getElementById('contenitore').innerHTML = ''; //'Quiz finito! Il tuo punteggio finale è: ' //+ score;
+        document.getElementById('contenitore').innerHTML = ''; //'Quiz finito! Il tuo punteggio finale è: ' + score;
+        var chartDiv = document.createElement('div');
+        chartDiv.id = 'donutchart';
+        chartDiv.style.width = '900px';
+        chartDiv.style.height = '500px';
+        document.body.appendChild(chartDiv);
+        drawChart()
         // document.getElementById('rispostine').innerHTML = ''; // Pulisci le risposte
         // document.getElementById('timer-container').style.display = 'none'; // Nascondi il timer
     }
@@ -179,3 +185,41 @@ function aspetto_visivo_timer() {
     timerText.textContent = tempoMancante;
 }
 inserisci_domanda(questions);
+
+
+
+  // Carica il pacchetto di Google Charts
+  google.charts.load('current', {packages: ['corechart']});
+ google.charts.setOnLoadCallback(drawChart);
+
+
+ function drawChart() {
+    let score = Math.floor(Math.random() * 11); // Genera un punteggio casuale tra 0 e 10
+    const testData = generateTestData(score);
+
+    var data = google.visualization.arrayToDataTable(testData);
+    var passedMessage = score > 6 ? 'Sei passato' : 'Non sei passato';
+    var options = {
+        title: passedMessage, // Usa il titolo per mostrare il messaggio di passaggio
+        pieHole: 0.4,
+        pieSliceText: 'none', // Nasconde il testo nei segmenti del grafico
+        tooltip: { trigger: 'none' },
+        titleTextStyle: {
+            color: score > 6 ? 'green' : 'red',
+            fontSize: 24,
+            bold: true,
+            italic: false
+        }
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+    chart.draw(data, options);
+}
+
+function generateTestData(score) {
+    return [
+        ['Result', 'Value'],
+        ['buone', score],
+        ['sbagliate', 10 - score]
+    ];
+}

@@ -39,11 +39,11 @@ p{
 }
 
 
- .immagine_stella input{
+.immagine_stella input{
     display: none;
     margin: 1rem;
     
- }
+}
 
 
 .immagine_stella label {
@@ -53,7 +53,7 @@ p{
     height: 60px;
     cursor: pointer;
     filter: brightness(7%);
-  }
+}
   
   .immagine_stella input:checked ~ label {
     filter: brightness(100%);
@@ -63,7 +63,7 @@ p{
   .immagine_stella label:hover ~ label,
   .immagine_stella input:focus ~ label {
     filter: brightness(100%);
-  }
+}
 
 
 /*Sezione inerente allo scrivere un commento*/
